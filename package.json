@@ -5,6 +5,9 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "vite build && tsc --noEmit",
+		"build:cf": "NITRO_PRESET=cloudflare-module vite build",
+		"cf-typegen": "wrangler types",
+		"deploy": "pnpm build:cf && wrangler deploy",
 		"dev": "vite dev",
 		"lint": "biome check --write . --unsafe",
 		"preview": "vite preview",
@@ -32,6 +35,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.13",
+		"@cloudflare/vite-plugin": "1.54.6",
 		"@tailwindcss/vite": "4.3.3",
 		"@types/node": "26.4.0",
 		"@types/react": "19.3.0",
@@ -40,7 +44,8 @@
 		"nitro": "^3.0.260903-beta",
 		"tailwindcss": "4.3.3",
 		"typescript": "7.0.2",
-		"vite": "8.3.0"
+		"vite": "8.3.0",
+		"wrangler": "4.130.0"
 	},
 	"engines": {
 		"pnpm": "11.25.0"

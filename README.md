@@ -40,6 +40,8 @@ tagline, "now" items, and links. Edit that file to change what the site says.
 ## Structure
 
 ```
+wrangler.jsonc               # Cloudflare Workers config (name, entry, compat flags)
+.github/workflows/deploy.yml # CI: build + wrangler deploy on push to main
 src/
   client.tsx        # hydration entry (StartClient)
   server.ts         # universal { fetch } streaming entry
@@ -74,6 +76,9 @@ scripts/
 | --- | --- |
 | `pnpm dev` | Dev server with HMR and route-tree generation |
 | `pnpm build` | `vite build` + `tsc --noEmit` → `.output/` |
+| `pnpm build:cf` | Build for Cloudflare Workers (`NITRO_PRESET=cloudflare-module`) |
+| `pnpm deploy` | `build:cf` + `wrangler deploy` |
+| `pnpm cf-typegen` | Generate `worker-configuration.d.ts` from `wrangler.jsonc` |
 | `pnpm start` | Run the production Nitro server (`node .output/server/index.mjs`) |
 | `pnpm lint` | `biome check --write . --unsafe` — auto-fixes and rewrites files |
 | `pnpm typecheck` | `tsc --noEmit` |
@@ -93,19 +98,37 @@ scripts/
 
 ## Deployment
 
-The app is runtime-agnostic; the deployment target is the Nitro preset, chosen
-at build time in `vite.config.ts`:
+The app is runtime-agnostic; the deployment target is chosen at build time in
+`vite.config.ts`.
 
-```ts
-nitro({ preset: process.env.NITRO_PRESET || 'node-server' })
-```
+**Node (Nitro) — default:**
 
 ```bash
-NITRO_PRESET=node-server pnpm build   # default
-NITRO_PRESET=vercel       pnpm build
-NITRO_PRESET=netlify      pnpm build
-NITRO_PRESET=cloudflare-pages pnpm build
+pnpm build    # vite build + tsc --noEmit → .output/
+pnpm start    # node .output/server/index.mjs
 ```
+
+Any `NITRO_PRESET` value that isn't `cloudflare-*` builds through Nitro:
+
+```bash
+NITRO_PRESET=vercel  pnpm build
+NITRO_PRESET=netlify pnpm build
+```
+
+**Cloudflare Workers:**
+
+`NITRO_PRESET=cloudflare-*` swaps Nitro for `@cloudflare/vite-plugin`, and the
+built Worker is deployed with Wrangler (see `wrangler.jsonc`):
+
+```bash
+pnpm build:cf     # NITRO_PRESET=cloudflare-module vite build
+pnpm deploy       # build:cf && wrangler deploy
+pnpm cf-typegen   # wrangler types
+```
+
+CI/CD deploys on every push to `main` via `.github/workflows/deploy.yml`
+(`cloudflare/wrangler-action`). Required repo secrets: `CLOUDFLARE_ACCOUNT_ID`
+and `CLOUDFLARE_API_TOKEN`.
 
 See [AGENTS.md](./AGENTS.md) for project conventions, hard rules, and the
 available agent skills.
