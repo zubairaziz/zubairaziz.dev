@@ -11,6 +11,9 @@ Built with **TanStack Start** (Vite + Nitro), React 19, Tailwind v4, and shadcn 
 | --- | --- |
 | `pnpm dev` | Vite dev server on `http://localhost:3000` (auto-bumps to 3001 if busy) |
 | `pnpm build` | `vite build && tsc --noEmit` → emits to `.output/` |
+| `pnpm build:cf` | Build for Cloudflare Workers (`NITRO_PRESET=cloudflare-module`) |
+| `pnpm deploy` | `build:cf` then `wrangler deploy` |
+| `pnpm cf-typegen` | Generate `worker-configuration.d.ts` from `wrangler.jsonc` |
 | `pnpm start` | `node .output/server/index.mjs` (production preview) |
 | `pnpm lint` | `biome check --write . --unsafe` — **auto-fixes and rewrites files** |
 | `pnpm typecheck` | `tsc --noEmit` |
@@ -22,6 +25,7 @@ Always run `pnpm typecheck` after edits; it is the source of truth for correctne
 ## Stack & versions
 
 - TanStack Start ^1.168 + Router ^1.170, React 19.3, Vite 8, TypeScript 7, Nitro ^3 beta
+- Cloudflare Workers deploys via `@cloudflare/vite-plugin` + `wrangler` (see Deployment notes)
 - Tailwind v4 via `@tailwindcss/vite` (see gotcha below), pnpm 11 (`.nvmrc` pins Node 24)
 - shadcn v4 (style `base-lyra`, baseColor `mist`, base-ui primitives, `lucide-react` icons)
 - Biome for lint + format; path alias `~/*` → `src/*`
@@ -29,6 +33,9 @@ Always run `pnpm typecheck` after edits; it is the source of truth for correctne
 ## File map
 
 ```
+wrangler.jsonc     # Cloudflare Workers config (name, entry, compat flags)
+.github/workflows/
+  deploy.yml       # CI: build + wrangler deploy on push to main
 src/
   client.tsx        # hydration entry (StartClient)
   server.ts         # universal { fetch } streaming entry
@@ -80,8 +87,16 @@ scripts/
 
 ## Deployment notes
 
-- Runtime-agnostic app; target = Nitro preset at build time
-  (`NITRO_PRESET` env var, default `node-server`).
+- Runtime-agnostic app; target chosen at build time by `NITRO_PRESET` (default
+  `node-server`, which builds through Nitro to `.output/`).
+- `NITRO_PRESET=cloudflare-*` swaps Nitro for `@cloudflare/vite-plugin`: the
+  plugin builds the `ssr` environment against the Workers runtime, and
+  `wrangler deploy` (config in `wrangler.jsonc`) uploads it. `pnpm build:cf` /
+  `pnpm deploy` / `pnpm cf-typegen` wrap this.
+- CI: `.github/workflows/deploy.yml` deploys on push to `main` via
+  `cloudflare/wrangler-action`. Needs repo secrets `CLOUDFLARE_ACCOUNT_ID` +
+  `CLOUDFLARE_API_TOKEN` and a GitHub `production` environment (or drop the
+  `environment:` line).
 - Static assets in `public/` are served as-is (favicon, OG image, manifest,
   robots.txt, sitemap.xml). Regenerate the OG card with `node scripts/generate-og.mjs`
   and the icon with `rsvg-convert -w 180 -h 180 scripts/apple-touch-icon.svg -o public/apple-touch-icon.png`.

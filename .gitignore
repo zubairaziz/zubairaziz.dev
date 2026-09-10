@@ -3,6 +3,7 @@ node_modules
 dist
 .dev-dist
 .tanstack
+.wrangler
 *.log
 .DS_Store
 .env
@@ -10,4 +11,5 @@ dist
 !.env.example
 count.txt
 .tsserver
+worker-configuration.d.ts
 scripts/og-image.html

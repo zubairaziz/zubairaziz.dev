@@ -1,8 +1,14 @@
+import { cloudflare } from '@cloudflare/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
+
+const target = process.env.NITRO_PRESET || 'node-server'
+// `cloudflare-*` targets use the Workers runtime via `@cloudflare/vite-plugin`
+// instead of Nitro. Everything else builds through Nitro.
+const isCloudflare = target.startsWith('cloudflare')
 
 /**
  * TanStack Start (Vite) + Nitro for production server builds.
@@ -15,11 +21,12 @@ import { defineConfig } from 'vite'
  *   - `bun`                   → Bun server
  *   - `vercel`                → Vercel functions
  *   - `netlify`               → Netlify functions
- *   - `cloudflare-pages` / `cloudflare-module` → Cloudflare Workers/Pages
+ *   - `cloudflare-*`          → Cloudflare Workers (via `@cloudflare/vite-plugin`)
  *
- * You can override the preset at build time with the `NITRO_PRESET` env var:
+ * You can override the target at build time with the `NITRO_PRESET` env var:
  *
  *   NITRO_PRESET=vercel npm run build
+ *   NITRO_PRESET=cloudflare-module pnpm build:cf && pnpm wrangler deploy
  *
  * The default entry files are resolved by the plugin: `src/client.tsx`,
  * `src/server.ts`, `src/start.ts`, `src/router.tsx`.
@@ -39,12 +46,13 @@ export default defineConfig({
 	},
 	plugins: [
 		tailwindcss(),
+		// Cloudflare Workers: build the "ssr" Vite environment against the
+		// Workers runtime; `wrangler deploy` uploads the result.
+		...(isCloudflare ? [cloudflare({ viteEnvironment: { name: 'ssr' } })] : []),
 		tanstackStart(),
 		// react's vite plugin must come after start's vite plugin
 		viteReact(),
 		// production server build → outputs to `.output`
-		nitro({
-			preset: process.env.NITRO_PRESET || 'node-server',
-		}),
+		...(isCloudflare ? [] : [nitro({ preset: target })]),
 	],
 })
