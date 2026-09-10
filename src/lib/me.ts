@@ -15,7 +15,6 @@ export const me = {
 		{ label: 'tabtally', href: 'https://www.tabtally.io/' },
 	],
 	links: [
-		// Replace these hrefs with your real profiles.
 		{ label: 'github', href: 'https://github.com/zubairaziz' },
 		{ label: 'x', href: 'https://x.com/zubairaziz_13' },
 		{ label: 'linkedin', href: 'https://www.linkedin.com/in/zubairaziz13' },

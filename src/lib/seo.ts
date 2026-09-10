@@ -34,7 +34,7 @@ export function seo({
 					{ property: 'og:image', content: image },
 					{ property: 'og:image:width', content: '1200' },
 					{ property: 'og:image:height', content: '630' },
-					{ property: 'og:image:alt', content: title },
+					{ property: 'og:image:alt', content: description ?? title },
 				]
 			: []),
 	]

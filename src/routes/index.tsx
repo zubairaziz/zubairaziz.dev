@@ -14,7 +14,9 @@ export const Route = createFileRoute('/')({
 		meta: [
 			...seo({
 				title: `${me.name} — ${me.host}`,
-				description: `${me.role}. ${me.tagline.prefix} ${me.tagline.words.join(', ')}.`,
+				description: `${me.name} — ${me.role} building ${me.tagline.words
+					.slice(0, -1)
+					.join(', ')}, and ${me.tagline.words[me.tagline.words.length - 1]}.`,
 				image: `https://${me.host}/opengraph-image.png`,
 				url: `https://${me.host}/`,
 			}),
@@ -44,9 +46,9 @@ function Home() {
 				</div>
 			</section>
 
-			{/* $ what i'm working on */}
+			{/* $ working on */}
 			<section className="flex flex-col gap-3">
-				<Prompt>what i'm working on</Prompt>
+				<Prompt>working on</Prompt>
 				<ul className="flex flex-wrap gap-x-5 gap-y-2 border-l border-border pl-4 sm:pl-6">
 					{me.now.map((item) => (
 						<li key={item.label}>

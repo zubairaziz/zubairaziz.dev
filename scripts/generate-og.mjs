@@ -222,7 +222,7 @@ const html = `<!doctype html>
       <div class="name">ZUBAIR AZIZ</div>
       <div class="tagline">
         <span class="comment">// I build</span>
-        <span class="accent"> websites &middot; mobile apps &middot; custom software</span>
+        <span class="accent"> websites &middot; mobile apps &middot; custom software &middot; developer tools</span>
         <span class="cursor"></span>
       </div>
     </div>

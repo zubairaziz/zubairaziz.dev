@@ -49,7 +49,7 @@ export const Route = createRootRoute({
 			{ name: 'theme-color', content: '#090b0c' },
 			...seo({
 				title: 'Zubair Aziz — zubairaziz.dev',
-				description: 'The personal site of Zubair Aziz.',
+				description: `The personal site of ${me.name}, ${me.role}.`,
 				image: 'https://zubairaziz.dev/opengraph-image.png',
 				url: 'https://zubairaziz.dev/',
 			}),
