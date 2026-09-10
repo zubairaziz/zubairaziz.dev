@@ -1,0 +1,15 @@
+{
+	"name": "Zubair Aziz",
+	"short_name": "Zubair",
+	"description": "Software engineer — personal site.",
+	"id": "/",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#090b0c",
+	"theme_color": "#090b0c",
+	"icons": [
+		{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+		{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+	]
+}
