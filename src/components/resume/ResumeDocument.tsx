@@ -26,13 +26,6 @@ const entryStyle: CSSProperties = {
 	marginBottom: 'var(--resume-item-gap)',
 }
 
-const accentBar: CSSProperties = {
-	width: '24px',
-	height: '2px',
-	background: 'var(--resume-accent)',
-	marginBottom: '8px',
-}
-
 function joinParts(
 	parts: Array<string | undefined>,
 	separator = ' · ',
@@ -128,10 +121,9 @@ export function ResumeDocument({ data }: { data: ResumeData }) {
 				) : null}
 			</header>
 
-			{/* Summary */}
+			{/* Summary (no heading — it reads as a lead paragraph) */}
 			{summary.trim() ? (
 				<section style={sectionStyle}>
-					<h2 style={headingStyle}>Summary</h2>
 					<p style={{ margin: 0 }}>{summary.trim()}</p>
 				</section>
 			) : null}
@@ -145,24 +137,43 @@ export function ResumeDocument({ data }: { data: ResumeData }) {
 							<h3
 								style={{
 									margin: 0,
+									display: 'flex',
+									justifyContent: 'space-between',
+									alignItems: 'baseline',
+									gap: '0.75rem',
 									fontFamily: 'var(--resume-heading-font)',
 									color: 'var(--resume-heading)',
 									fontSize: '1.05em',
 								}}
 							>
-								{joinParts([entry.position, entry.company], ' — ')}
+								<span>{joinParts([entry.position, entry.company], ' — ')}</span>
+								{joinDates(entry.startDate, entry.endDate) ? (
+									<span
+										style={{
+											color: 'var(--resume-accent)',
+											fontSize: '0.92em',
+											whiteSpace: 'nowrap',
+										}}
+									>
+										{joinDates(entry.startDate, entry.endDate)}
+									</span>
+								) : null}
 							</h3>
-							<p
-								style={{
-									margin: '2px 0 4px',
-									color: 'var(--resume-accent)',
-									fontSize: '0.92em',
-								}}
-							>
-								{joinDates(entry.startDate, entry.endDate)}
-							</p>
-							{entry.description.trim() ? (
-								<p style={{ margin: 0 }}>{entry.description.trim()}</p>
+							{entry.responsibilities.filter((r) => r.text.trim()).length >
+							0 ? (
+								<ul
+									style={{
+										margin: '2px 0 0',
+										paddingLeft: '1.25em',
+										listStyleType: 'disc',
+									}}
+								>
+									{entry.responsibilities
+										.filter((r) => r.text.trim())
+										.map((r) => (
+											<li key={r.id}>{r.text.trim()}</li>
+										))}
+								</ul>
 							) : null}
 						</div>
 					))}
@@ -207,7 +218,6 @@ export function ResumeDocument({ data }: { data: ResumeData }) {
 						if (!group.category.trim() && items.length === 0) return null
 						return (
 							<div key={group.id} style={entryStyle}>
-								<div style={accentBar} />
 								{group.category.trim() ? (
 									<strong style={{ color: 'var(--resume-heading)' }}>
 										{group.category.trim()}:{' '}

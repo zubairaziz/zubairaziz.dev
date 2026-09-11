@@ -187,6 +187,30 @@
 }
 
 /*
+ * The sticky on-screen preview column: tall resumes get an inner scroll so the
+ * whole paper stays reachable while the form is being edited. Keep the
+ * scrollbar thin and token-colored (`--border`) so it doesn't compete with the
+ * paper.
+ */
+.resume-preview-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border) transparent;
+}
+
+.resume-preview-scroll::-webkit-scrollbar {
+	width: 8px;
+}
+
+.resume-preview-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.resume-preview-scroll::-webkit-scrollbar-thumb {
+	background: var(--border);
+	border-radius: 9999px;
+}
+
+/*
  * Print-to-PDF: hide the entire app and show only the portal-hosted resume.
  * `ResumePrintPortal` renders `#resume-print-root` as a direct child of <body>,
  * so `body > *:not(.resume-print-root)` removes the site chrome and builder UI

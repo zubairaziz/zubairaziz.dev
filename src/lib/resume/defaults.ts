@@ -48,8 +48,20 @@ export function sampleResume(): ResumeData {
 				position: 'Senior Software Engineer',
 				startDate: '01/2021',
 				endDate: 'Present',
-				description:
-					'Led a team of 4 rebuilding the billing pipeline, cutting invoice latency 40%. Introduced contract testing across 12 services and drove the migration of a legacy Rails monolith to typed services.',
+				responsibilities: [
+					{
+						id: 'exp-1-r1',
+						text: 'Led a team of 4 rebuilding the billing pipeline, cutting invoice latency 40%.',
+					},
+					{
+						id: 'exp-1-r2',
+						text: 'Introduced contract testing across 12 services.',
+					},
+					{
+						id: 'exp-1-r3',
+						text: 'Drove the migration of a legacy Rails monolith to typed services.',
+					},
+				],
 			},
 			{
 				id: 'exp-2',
@@ -57,8 +69,16 @@ export function sampleResume(): ResumeData {
 				position: 'Software Engineer',
 				startDate: '06/2018',
 				endDate: '12/2020',
-				description:
-					'Built customer-facing dashboards in React and a Node.js gateway serving 200k daily requests. Reduced page load time 55% through code-splitting and caching.',
+				responsibilities: [
+					{
+						id: 'exp-2-r1',
+						text: 'Built customer-facing dashboards in React and a Node.js gateway serving 200k daily requests.',
+					},
+					{
+						id: 'exp-2-r2',
+						text: 'Reduced page load time 55% through code-splitting and caching.',
+					},
+				],
 			},
 		],
 		education: [
@@ -111,7 +131,7 @@ export function newExperience() {
 		position: '',
 		startDate: '',
 		endDate: '',
-		description: '',
+		responsibilities: [{ id: newId('resp'), text: '' }],
 	}
 }
 

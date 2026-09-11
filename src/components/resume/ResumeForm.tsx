@@ -18,7 +18,7 @@ import {
 } from '~/lib/resume/defaults'
 import type { ResumeFormApi } from '~/lib/resume/form'
 import { type SectionDef, sectionAnchor, sections } from '~/lib/resume/sections'
-import { joinSkills, splitSkills } from '~/lib/resume/types'
+import { joinSkills, newId, splitSkills } from '~/lib/resume/types'
 
 function Section({
 	def,
@@ -387,21 +387,54 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 												</form.Field>
 											</div>
 
-											<form.Field name={`experience[${i}].description`}>
+											<form.Field
+												name={`experience[${i}].responsibilities`}
+												mode="array"
+											>
 												{(f) => (
 													<Field>
-														<FieldLabel htmlFor={f.name}>
-															Description
-														</FieldLabel>
-														<Textarea
-															id={f.name}
-															name={f.name}
-															value={f.state.value}
-															onBlur={f.handleBlur}
-															onChange={(e) => f.handleChange(e.target.value)}
-															placeholder="What you built, owned, and shipped."
-															rows={3}
-														/>
+														<FieldLabel>Responsibilities</FieldLabel>
+														<div className="flex flex-col gap-2">
+															{f.state.value.map((resp, ri) => (
+																<form.Field
+																	key={resp.id}
+																	name={`experience[${i}].responsibilities[${ri}].text`}
+																>
+																	{(rf) => (
+																		<div className="flex items-center gap-2">
+																			<Input
+																				id={rf.name}
+																				name={rf.name}
+																				value={rf.state.value}
+																				onBlur={rf.handleBlur}
+																				onChange={(e) =>
+																					rf.handleChange(e.target.value)
+																				}
+																				placeholder="What you built, owned, and shipped."
+																				aria-label={`Responsibility ${ri + 1}`}
+																			/>
+																			<Button
+																				type="button"
+																				variant="ghost"
+																				size="icon-sm"
+																				className="shrink-0 text-muted-foreground hover:text-destructive"
+																				onClick={() => f.removeValue(ri)}
+																				aria-label="Remove responsibility"
+																			>
+																				<Trash2 />
+																			</Button>
+																		</div>
+																	)}
+																</form.Field>
+															))}
+															<AddButton
+																onClick={() =>
+																	f.pushValue({ id: newId('resp'), text: '' })
+																}
+															>
+																Add responsibility
+															</AddButton>
+														</div>
 													</Field>
 												)}
 											</form.Field>

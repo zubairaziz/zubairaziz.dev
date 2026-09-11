@@ -1,4 +1,3 @@
-import { Field, FieldTitle } from '~/components/ui/field'
 import { ToggleGroup, ToggleGroupItem } from '~/components/ui/toggle-group'
 import { type ThemeId, themeList } from '~/lib/resume/themes'
 
@@ -10,8 +9,10 @@ export function ThemeSelector({
 	onChange: (id: ThemeId) => void
 }) {
 	return (
-		<Field>
-			<FieldTitle id="theme-selector-label">Theme</FieldTitle>
+		<div className="flex items-center gap-2">
+			<span id="theme-selector-label" className="text-xs text-muted-foreground">
+				Theme
+			</span>
 			<ToggleGroup
 				aria-labelledby="theme-selector-label"
 				value={[value]}
@@ -29,6 +30,6 @@ export function ThemeSelector({
 					</ToggleGroupItem>
 				))}
 			</ToggleGroup>
-		</Field>
+		</div>
 	)
 }

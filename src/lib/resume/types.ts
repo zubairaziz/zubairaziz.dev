@@ -16,13 +16,18 @@ export interface Link {
 	url: string
 }
 
+export interface Responsibility {
+	id: string
+	text: string
+}
+
 export interface ExperienceEntry {
 	id: string
 	company: string
 	position: string
 	startDate: string
 	endDate: string
-	description: string
+	responsibilities: Responsibility[]
 }
 
 export interface EducationEntry {
@@ -70,13 +75,18 @@ const linkSchema = z.object({
 	url: emptyOr(z.string().trim().url('Enter a valid URL')),
 })
 
+const responsibilitySchema = z.object({
+	id: z.string(),
+	text: z.string(),
+})
+
 const experienceSchema = z.object({
 	id: z.string(),
 	company: z.string().trim(),
 	position: z.string().trim(),
 	startDate: z.string().trim(),
 	endDate: z.string().trim(),
-	description: z.string().trim(),
+	responsibilities: z.array(responsibilitySchema),
 })
 
 const educationSchema = z.object({

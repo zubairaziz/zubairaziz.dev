@@ -53,9 +53,9 @@ export function resumeToMarkdown(data: ResumeData): string {
 		lines.push(linkLine)
 	}
 
-	// Summary
+	// Summary (no heading — it reads as a lead paragraph)
 	if (summary.trim()) {
-		pushSection(lines, 'Summary')
+		if (lines.length > 0) lines.push('')
 		lines.push(summary.trim())
 	}
 
@@ -70,9 +70,14 @@ export function resumeToMarkdown(data: ResumeData): string {
 			lines.push(`### ${heading}`)
 			const dates = joinDates(entry.startDate, entry.endDate)
 			if (dates) lines.push(dates)
-			if (entry.description.trim()) {
+			const responsibilities = entry.responsibilities.filter((r) =>
+				r.text.trim(),
+			)
+			if (responsibilities.length > 0) {
 				lines.push('')
-				lines.push(entry.description.trim())
+				for (const responsibility of responsibilities) {
+					lines.push(`- ${responsibility.text.trim()}`)
+				}
 			}
 			lines.push('')
 		}

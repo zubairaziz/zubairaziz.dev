@@ -63,7 +63,7 @@ function ResumeBuilder() {
 
 	return (
 		<div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-			<header className="flex flex-col gap-5 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
+			<header className="flex flex-col gap-5 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
 				<div className="flex flex-col gap-2">
 					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 						<h1 className="font-heading text-2xl font-bold text-foreground">
@@ -99,11 +99,11 @@ function ResumeBuilder() {
 					</div>
 					<p className="max-w-md text-sm text-muted-foreground">
 						Fill in your details, watch the preview update live, then export as
-						Markdown or a print-ready PDF.
+						Markdown or a print-ready, ATS-ready PDF.
 					</p>
 				</div>
 
-				<div className="flex flex-wrap items-end gap-x-6 gap-y-4">
+				<div className="flex flex-wrap items-center gap-x-4 gap-y-3">
 					<ThemeSelector value={themeId} onChange={handleThemeChange} />
 					<ExportMenu form={form} />
 				</div>
@@ -114,7 +114,7 @@ function ResumeBuilder() {
 
 				<ResumeForm form={form} />
 
-				<div className="flex flex-col gap-3">
+				<div className="flex flex-col gap-3 self-stretch">
 					<div className="lg:hidden">
 						<Button
 							type="button"
@@ -131,8 +131,12 @@ function ResumeBuilder() {
 						</Button>
 					</div>
 
-					<div className={showPreview ? 'block' : 'hidden lg:block'}>
-						<div className="lg:sticky lg:top-20">
+					<div
+						className={`${
+							showPreview ? 'block' : 'hidden lg:block'
+						} lg:sticky lg:top-20`}
+					>
+						<div className="resume-preview-scroll lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:p-2 lg:-m-2">
 							<ResumePreview form={form} theme={theme} />
 						</div>
 					</div>

@@ -1,4 +1,4 @@
-import { type ResumeData, resumeSchema } from './types'
+import { newId, type ResumeData, resumeSchema } from './types'
 
 const STORAGE_KEY = 'resume-builder:data'
 const THEME_KEY = 'resume-builder:theme'
@@ -8,13 +8,53 @@ const THEME_KEY = 'resume-builder:theme'
  * server (or if localStorage is unavailable) they are no-ops / return null.
  */
 
+/**
+ * Migrate legacy saved data: `experience[].description` (a single paragraph)
+ * became `experience[].responsibilities` (a list of bullets). Split the old
+ * paragraph into bullets so existing saves keep validating instead of wiping.
+ */
+function migrateExperience(data: unknown): unknown {
+	if (!data || typeof data !== 'object') return data
+	const obj = data as { experience?: unknown }
+	if (!Array.isArray(obj.experience)) return data
+	return {
+		...obj,
+		experience: obj.experience.map((entry) => {
+			if (!entry || typeof entry !== 'object') return entry
+			const exp = entry as {
+				description?: unknown
+				responsibilities?: unknown
+			}
+			if (
+				typeof exp.description !== 'string' ||
+				Array.isArray(exp.responsibilities)
+			) {
+				return entry
+			}
+			const bullets = exp.description
+				.split(/\n+/)
+				.map((line) => line.trim())
+				.filter(Boolean)
+			const rest = { ...exp } as Record<string, unknown>
+			delete rest.description
+			return {
+				...rest,
+				responsibilities: bullets.map((text) => ({
+					id: newId('resp'),
+					text,
+				})),
+			}
+		}),
+	}
+}
+
 /** Returns the stored resume, or `null` when nothing valid is saved. */
 export function loadResume(): ResumeData | null {
 	if (typeof window === 'undefined') return null
 	try {
 		const raw = window.localStorage.getItem(STORAGE_KEY)
 		if (!raw) return null
-		const parsed = resumeSchema.safeParse(JSON.parse(raw))
+		const parsed = resumeSchema.safeParse(migrateExperience(JSON.parse(raw)))
 		return parsed.success ? parsed.data : null
 	} catch {
 		return null
