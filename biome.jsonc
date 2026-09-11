@@ -31,6 +31,24 @@
 			}
 		}
 	},
+	// shadcn-generated primitives: div[role=group] wrappers, a bare <label>
+	// primitive (always used with htmlFor/children at the call site), and a
+	// click-to-focus addon. These are false positives at the component
+	// definition level — the actual usage sites are accessible.
+	"overrides": [
+		{
+			"includes": ["src/components/ui/**"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useSemanticElements": "off",
+						"noLabelWithoutControl": "off",
+						"useKeyWithClickEvents": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single",

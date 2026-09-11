@@ -158,3 +158,53 @@
 		animation: none;
 	}
 }
+
+/* --- Resume builder ------------------------------------------------------- */
+
+/*
+ * The rendered resume document reads its palette/typography from the
+ * `--resume-*` variables set inline by `themeToStyle(...)`. Fallbacks keep the
+ * paper legible before a theme is applied.
+ */
+.resume-paper {
+	background: var(--resume-bg, #ffffff);
+	color: var(--resume-text, #1f2937);
+	box-shadow:
+		0 0 0 1px var(--resume-border, #e5e7eb),
+		0 10px 30px rgb(0 0 0 / 0.08);
+	padding: 0.55in;
+	min-height: 11in;
+	box-sizing: border-box;
+}
+
+/*
+ * Print-to-PDF: hide everything except the resume document, position it at the
+ * top of the first page, and let `@page` provide zero margins (the paper's own
+ * padding handles the margins so multi-page resumes flow continuously).
+ */
+@media print {
+	@page {
+		size: letter;
+		margin: 0;
+	}
+
+	body.printing-resume * {
+		visibility: hidden;
+	}
+
+	body.printing-resume #resume-print-root,
+	body.printing-resume #resume-print-root * {
+		visibility: visible;
+	}
+
+	body.printing-resume #resume-print-root {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		max-width: none;
+		margin: 0;
+		box-shadow: none;
+		min-height: 0;
+	}
+}
