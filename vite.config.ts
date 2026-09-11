@@ -6,6 +6,7 @@ import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
 import { generateLlmText } from './scripts/generate-llms.ts'
 import { generateSitemap } from './scripts/generate-sitemap.ts'
+import { generateSkill } from './scripts/generate-skill.ts'
 
 const target = process.env.NITRO_PRESET || 'node-server'
 // `cloudflare-*` targets use the Workers runtime via `@cloudflare/vite-plugin`
@@ -47,7 +48,8 @@ export default defineConfig({
 		include: ['use-sync-external-store/shim/with-selector'],
 	},
 	plugins: [
-		// Regenerate `public/llms.txt` and `public/sitemap.xml` on every
+		// Regenerate `public/llms.txt`, `public/sitemap.xml`, the agent skill
+		// (`public/skills/about/SKILL.md`), and its digest module on every
 		// production build so they stay in sync with `src/lib/me.ts` (runs
 		// before `public/` is copied to output).
 		{
@@ -56,6 +58,7 @@ export default defineConfig({
 			buildStart() {
 				generateLlmText()
 				generateSitemap()
+				generateSkill()
 			},
 		},
 		tailwindcss(),

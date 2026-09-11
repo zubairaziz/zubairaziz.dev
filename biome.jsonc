@@ -13,7 +13,8 @@
 			"!!.tanstack/",
 			"!!node_modules/",
 			"!!public/",
-			"!!src/routeTree.gen.ts"
+			"!!src/routeTree.gen.ts",
+			"!!src/lib/skill-digest.gen.ts"
 		]
 	},
 	"formatter": {
