@@ -4,6 +4,8 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
+import { generateLlmText } from './scripts/generate-llms.ts'
+import { generateSitemap } from './scripts/generate-sitemap.ts'
 
 const target = process.env.NITRO_PRESET || 'node-server'
 // `cloudflare-*` targets use the Workers runtime via `@cloudflare/vite-plugin`
@@ -45,6 +47,17 @@ export default defineConfig({
 		include: ['use-sync-external-store/shim/with-selector'],
 	},
 	plugins: [
+		// Regenerate `public/llms.txt` and `public/sitemap.xml` on every
+		// production build so they stay in sync with `src/lib/me.ts` (runs
+		// before `public/` is copied to output).
+		{
+			name: 'generate-static-files',
+			apply: 'build',
+			buildStart() {
+				generateLlmText()
+				generateSitemap()
+			},
+		},
 		tailwindcss(),
 		// Cloudflare Workers: build the "ssr" Vite environment against the
 		// Workers runtime; `wrangler deploy` uploads the result.
