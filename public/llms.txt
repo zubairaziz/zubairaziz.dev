@@ -1,0 +1,22 @@
+# Zubair Aziz
+
+> Zubair Aziz — software engineer building websites, mobile apps, custom software, and developer tools.
+
+The personal site of Zubair Aziz, a terminal-styled one-pager at https://zubairaziz.dev.
+
+## Site
+
+- [Home](https://zubairaziz.dev/): The personal site of Zubair Aziz — software engineer.
+
+## Working on
+
+- [quiltt](https://www.quiltt.io/)
+- [tabtally](https://www.tabtally.io/)
+
+## Links
+
+- [GitHub](https://github.com/zubairaziz)
+- [X](https://x.com/zubairaziz_13)
+- [LinkedIn](https://www.linkedin.com/in/zubairaziz13)
+- [Email](mailto:zubairaziz.dev@gmail.com)
+- [WhatsApp](https://wa.me/+601140015269)

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=no
+
+Agentmap: https://zubairaziz.dev/.well-known/ai-catalog.json
 
 Sitemap: https://zubairaziz.dev/sitemap.xml

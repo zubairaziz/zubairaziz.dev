@@ -1,0 +1,41 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "zubairaziz.dev API",
+		"version": "1.0.0",
+		"description": "Read-only endpoints describing Zubair Aziz's personal site."
+	},
+	"servers": [{ "url": "https://zubairaziz.dev" }],
+	"paths": {
+		"/": {
+			"get": {
+				"summary": "Site profile",
+				"description": "Returns profile metadata about Zubair Aziz.",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Profile" }
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Profile": {
+				"type": "object",
+				"properties": {
+					"name": { "type": "string" },
+					"role": { "type": "string" },
+					"tagline": { "type": "array", "items": { "type": "string" } },
+					"now": { "type": "array", "items": { "type": "object" } },
+					"links": { "type": "array", "items": { "type": "object" } }
+				}
+			}
+		}
+	}
+}

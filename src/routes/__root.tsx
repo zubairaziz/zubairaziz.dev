@@ -11,6 +11,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
+import { WebMcp } from '~/components/WebMcp'
 import { me } from '~/lib/me'
 import { seo } from '~/lib/seo'
 import appCss from '~/styles/app.css?url'
@@ -60,6 +61,8 @@ export const Route = createRootRoute({
 			{ rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 			{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 			{ rel: 'manifest', href: '/site.webmanifest' },
+			{ rel: 'api-catalog', href: '/.well-known/api-catalog' },
+			{ rel: 'ai-catalog', href: '/.well-known/ai-catalog.json' },
 		],
 	}),
 	shellComponent: RootDocument,
@@ -108,6 +111,8 @@ function RootComponent() {
 			<main className="mx-auto max-w-5xl px-4 py-12">
 				<Outlet />
 			</main>
+
+			<WebMcp />
 		</div>
 	)
 }

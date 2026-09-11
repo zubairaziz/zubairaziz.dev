@@ -70,8 +70,9 @@ scripts/
    `white`, etc.). Use `bg-background`, `text-foreground`, `text-muted-foreground`,
    `text-primary`, `border-border`. `<html>` carries `className="dark"` in
    `__root.tsx`, so the `.dark` token set drives the look.
-2. **The accent is rose — deep crimson `#a50036`** (`oklch(0.455 0.188 13.697)`).
-   This is intentional, NOT orange. Don't "fix" it.
+2. **The accent is crimson.** Dark theme (drives the live look): neon crimson
+   `#ff1459` (`oklch(0.64 0.25 15)`). Light theme: deep crimson `#b90033`
+   (`oklch(0.48 0.22 15)`). All accent pairs are WCAG AA ≥4.5:1.
 3. **Copy lives in `src/lib/me.ts`.** Nothing else hardcodes text. Update `me.ts`
    to change what the site says. (The `email` link is a known placeholder — leave it.)
 4. **Tailwind via `@tailwindcss/vite` in `vite.config.ts` — NOT PostCSS.** The
