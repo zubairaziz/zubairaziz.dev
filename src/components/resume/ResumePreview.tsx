@@ -3,12 +3,12 @@ import { type ResumeTheme, themeToStyle } from '~/lib/resume/themes'
 import { ResumeDocument } from './ResumeDocument'
 
 /**
- * The live preview. Wraps the pure document in a letter-sized "paper" that
- * carries the theme CSS variables, and subscribes to form values so the
- * document re-renders on every keystroke.
+ * The live on-screen preview. Wraps the pure document in a letter-sized
+ * "paper" that carries the theme CSS variables, and subscribes to form values
+ * so the document re-renders on every keystroke.
  *
- * `id="resume-print-root"` is what the print stylesheet targets for the
- * print-to-PDF export.
+ * The print-to-PDF copy lives in `ResumePrintPortal` — a portal rendered as a
+ * direct child of <body> that the print stylesheet alone can show.
  */
 export function ResumePreview({
 	form,
@@ -19,7 +19,6 @@ export function ResumePreview({
 }) {
 	return (
 		<div
-			id="resume-print-root"
 			className="resume-paper mx-auto w-full max-w-204"
 			style={themeToStyle(theme)}
 		>

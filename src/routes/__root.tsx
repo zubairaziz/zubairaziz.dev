@@ -108,7 +108,7 @@ function RootComponent() {
 				</nav>
 			</header>
 
-			<main className="mx-auto max-w-5xl px-4 py-12">
+			<main className="px-4 py-12">
 				<Outlet />
 			</main>
 

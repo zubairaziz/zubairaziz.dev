@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react'
 import { ExportMenu } from '~/components/resume/ExportMenu'
 import { ResumeForm } from '~/components/resume/ResumeForm'
 import { ResumePreview } from '~/components/resume/ResumePreview'
+import { ResumePrintPortal } from '~/components/resume/ResumePrintPortal'
+import { SectionNav } from '~/components/resume/SectionNav'
 import { ThemeSelector } from '~/components/resume/ThemeSelector'
 import { Button } from '~/components/ui/button'
 import { sampleResume } from '~/lib/resume/defaults'
 import { useResumeForm } from '~/lib/resume/form'
+import { computeSectionFilled, sections } from '~/lib/resume/sections'
 import {
 	loadResume,
 	loadTheme,
@@ -59,12 +62,41 @@ function ResumeBuilder() {
 	}
 
 	return (
-		<div className="flex flex-col gap-8">
-			<header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-				<div className="flex flex-col gap-1">
-					<h1 className="font-heading text-2xl font-bold text-foreground">
-						Resume Builder
-					</h1>
+		<div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+			<header className="flex flex-col gap-5 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
+				<div className="flex flex-col gap-2">
+					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+						<h1 className="font-heading text-2xl font-bold text-foreground">
+							Resume Builder
+						</h1>
+						<form.Subscribe selector={(state) => state.values}>
+							{(values) => {
+								const filled = computeSectionFilled(values).size
+								return (
+									<div className="flex items-center gap-2">
+										<span className="font-mono text-xs text-muted-foreground tabular-nums">
+											{filled}/{sections.length}
+										</span>
+										<div
+											className="h-1 w-20 bg-muted"
+											role="progressbar"
+											aria-label="Sections complete"
+											aria-valuemin={0}
+											aria-valuemax={sections.length}
+											aria-valuenow={filled}
+										>
+											<div
+												className="h-full bg-primary transition-[width] duration-300"
+												style={{
+													width: `${(filled / sections.length) * 100}%`,
+												}}
+											/>
+										</div>
+									</div>
+								)
+							}}
+						</form.Subscribe>
+					</div>
 					<p className="max-w-md text-sm text-muted-foreground">
 						Fill in your details, watch the preview update live, then export as
 						Markdown or a print-ready PDF.
@@ -77,7 +109,9 @@ function ResumeBuilder() {
 				</div>
 			</header>
 
-			<div className="grid items-start gap-10 lg:grid-cols-2">
+			<div className="grid items-start gap-8 lg:grid-cols-2 xl:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
+				<SectionNav form={form} />
+
 				<ResumeForm form={form} />
 
 				<div className="flex flex-col gap-3">
@@ -104,6 +138,10 @@ function ResumeBuilder() {
 					</div>
 				</div>
 			</div>
+
+			{/* Hidden print-only copy, portaled to <body> so the print
+			    stylesheet can show it in isolation. */}
+			<ResumePrintPortal form={form} theme={theme} />
 		</div>
 	)
 }

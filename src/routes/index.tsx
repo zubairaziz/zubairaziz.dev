@@ -27,7 +27,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
 	return (
-		<div className="flex flex-col gap-12 font-mono">
+		<div className="mx-auto flex w-full max-w-5xl flex-col gap-12 font-mono">
 			{/* $ whoami */}
 			<section className="flex flex-col gap-5">
 				<Prompt>whoami</Prompt>

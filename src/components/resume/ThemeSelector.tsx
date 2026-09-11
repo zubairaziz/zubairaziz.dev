@@ -19,6 +19,8 @@ export function ThemeSelector({
 					if (v[0]) onChange(v[0] as ThemeId)
 				}}
 				spacing={2}
+				variant="outline"
+				size="sm"
 				className="flex-wrap"
 			>
 				{themeList.map((theme) => (

@@ -175,12 +175,24 @@
 	padding: 0.55in;
 	min-height: 11in;
 	box-sizing: border-box;
+	/* Force the paper's own colors (notably the dark Terminal theme) to print
+	   even when the user hasn't ticked "Background graphics". */
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
+}
+
+/* The print-only resume copy is hidden on screen. */
+.resume-print-root {
+	display: none;
 }
 
 /*
- * Print-to-PDF: hide everything except the resume document, position it at the
- * top of the first page, and let `@page` provide zero margins (the paper's own
- * padding handles the margins so multi-page resumes flow continuously).
+ * Print-to-PDF: hide the entire app and show only the portal-hosted resume.
+ * `ResumePrintPortal` renders `#resume-print-root` as a direct child of <body>,
+ * so `body > *:not(.resume-print-root)` removes the site chrome and builder UI
+ * without touching the resume. The resume stays in normal document flow (no
+ * `position: absolute`), so the browser paginates multi-page resumes instead
+ * of clipping everything after page one.
  */
 @media print {
 	@page {
@@ -188,23 +200,12 @@
 		margin: 0;
 	}
 
-	body.printing-resume * {
-		visibility: hidden;
+	body.printing-resume > *:not(.resume-print-root) {
+		display: none;
 	}
 
-	body.printing-resume #resume-print-root,
-	body.printing-resume #resume-print-root * {
-		visibility: visible;
-	}
-
-	body.printing-resume #resume-print-root {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		max-width: none;
-		margin: 0;
+	body.printing-resume .resume-print-root {
+		display: block;
 		box-shadow: none;
-		min-height: 0;
 	}
 }

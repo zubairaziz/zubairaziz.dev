@@ -17,26 +17,39 @@ import {
 	newSkillGroup,
 } from '~/lib/resume/defaults'
 import type { ResumeFormApi } from '~/lib/resume/form'
+import { type SectionDef, sectionAnchor, sections } from '~/lib/resume/sections'
 import { joinSkills, splitSkills } from '~/lib/resume/types'
 
 function Section({
-	title,
+	def,
+	index,
 	action,
 	children,
 }: {
-	title: string
+	def: SectionDef
+	index: number
 	action?: ReactNode
 	children: ReactNode
 }) {
+	const Icon = def.icon
 	return (
-		<section className="flex flex-col gap-4 border-t border-border pt-6">
-			<div className="flex flex-wrap items-center justify-between gap-2">
-				<h2 className="font-heading text-sm font-semibold tracking-wider text-foreground uppercase">
-					{title}
+		<section
+			id={sectionAnchor(def.id)}
+			className="scroll-mt-24 border border-border bg-card"
+		>
+			<div className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+				<h2 className="flex items-center gap-2.5">
+					<span className="font-mono text-xs text-muted-foreground tabular-nums">
+						{String(index + 1).padStart(2, '0')}
+					</span>
+					<Icon className="size-4 text-primary" aria-hidden="true" />
+					<span className="font-heading text-sm font-semibold text-foreground">
+						{def.label}
+					</span>
 				</h2>
 				{action}
 			</div>
-			{children}
+			<div className="flex flex-col gap-5 p-4">{children}</div>
 		</section>
 	)
 }
@@ -61,12 +74,12 @@ function RemoveButton({ onClick }: { onClick: () => void }) {
 		<Button
 			type="button"
 			variant="ghost"
-			size="sm"
-			className="self-start text-muted-foreground"
+			size="icon-sm"
+			className="absolute top-1.5 right-1.5 text-muted-foreground hover:text-destructive"
 			onClick={onClick}
+			aria-label="Remove entry"
 		>
-			<Trash2 data-icon="inline-start" />
-			Remove
+			<Trash2 />
 		</Button>
 	)
 }
@@ -81,7 +94,7 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 			}}
 		>
 			{/* Contact */}
-			<Section title="Contact">
+			<Section def={sections[0]} index={0}>
 				<FieldGroup>
 					<form.Field name="contact.name">
 						{(field) => {
@@ -171,7 +184,7 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 			</Section>
 
 			{/* Summary */}
-			<Section title="Summary">
+			<Section def={sections[1]} index={1}>
 				<form.Field name="summary">
 					{(field) => (
 						<Field>
@@ -192,7 +205,8 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 
 			{/* Links */}
 			<Section
-				title="Links"
+				def={sections[2]}
+				index={2}
 				action={
 					<form.Field name="links" mode="array">
 						{(field) => (
@@ -207,15 +221,18 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 					{(field) => (
 						<div className="flex flex-col gap-4">
 							{field.state.value.length === 0 ? (
-								<p className="text-xs text-muted-foreground">
+								<p className="border border-dashed border-border p-3 text-xs text-muted-foreground">
 									No links yet. Add GitHub, LinkedIn, or a portfolio.
 								</p>
 							) : (
 								field.state.value.map((link, i) => (
 									<div
 										key={link.id}
-										className="flex flex-col gap-3 border border-border p-3"
+										className="relative flex flex-col gap-3 border border-border p-4 pt-9"
 									>
+										<span className="absolute top-2.5 left-4 font-mono text-xs text-muted-foreground">
+											Entry {String(i + 1).padStart(2, '0')}
+										</span>
 										<FieldGroup>
 											<form.Field name={`links[${i}].label`}>
 												{(lf) => (
@@ -271,7 +288,8 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 
 			{/* Experience */}
 			<Section
-				title="Experience"
+				def={sections[3]}
+				index={3}
 				action={
 					<form.Field name="experience" mode="array">
 						{(field) => (
@@ -286,15 +304,18 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 					{(field) => (
 						<div className="flex flex-col gap-4">
 							{field.state.value.length === 0 ? (
-								<p className="text-xs text-muted-foreground">
+								<p className="border border-dashed border-border p-3 text-xs text-muted-foreground">
 									No roles yet. Add your work history.
 								</p>
 							) : (
 								field.state.value.map((entry, i) => (
 									<div
 										key={entry.id}
-										className="flex flex-col gap-3 border border-border p-3"
+										className="relative flex flex-col gap-3 border border-border p-4 pt-9"
 									>
+										<span className="absolute top-2.5 left-4 font-mono text-xs text-muted-foreground">
+											Entry {String(i + 1).padStart(2, '0')}
+										</span>
 										<FieldGroup>
 											<form.Field name={`experience[${i}].position`}>
 												{(f) => (
@@ -396,7 +417,8 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 
 			{/* Education */}
 			<Section
-				title="Education"
+				def={sections[4]}
+				index={4}
 				action={
 					<form.Field name="education" mode="array">
 						{(field) => (
@@ -411,15 +433,18 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 					{(field) => (
 						<div className="flex flex-col gap-4">
 							{field.state.value.length === 0 ? (
-								<p className="text-xs text-muted-foreground">
+								<p className="border border-dashed border-border p-3 text-xs text-muted-foreground">
 									No education yet. Add a school or degree.
 								</p>
 							) : (
 								field.state.value.map((entry, i) => (
 									<div
 										key={entry.id}
-										className="flex flex-col gap-3 border border-border p-3"
+										className="relative flex flex-col gap-3 border border-border p-4 pt-9"
 									>
+										<span className="absolute top-2.5 left-4 font-mono text-xs text-muted-foreground">
+											Entry {String(i + 1).padStart(2, '0')}
+										</span>
 										<FieldGroup>
 											<form.Field name={`education[${i}].school`}>
 												{(f) => (
@@ -502,7 +527,8 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 
 			{/* Skills */}
 			<Section
-				title="Skills"
+				def={sections[5]}
+				index={5}
 				action={
 					<form.Field name="skills" mode="array">
 						{(field) => (
@@ -517,15 +543,18 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 					{(field) => (
 						<div className="flex flex-col gap-4">
 							{field.state.value.length === 0 ? (
-								<p className="text-xs text-muted-foreground">
+								<p className="border border-dashed border-border p-3 text-xs text-muted-foreground">
 									No skills yet. Group them by category (Languages, Tools…).
 								</p>
 							) : (
 								field.state.value.map((group, i) => (
 									<div
 										key={group.id}
-										className="flex flex-col gap-3 border border-border p-3"
+										className="relative flex flex-col gap-3 border border-border p-4 pt-9"
 									>
+										<span className="absolute top-2.5 left-4 font-mono text-xs text-muted-foreground">
+											Entry {String(i + 1).padStart(2, '0')}
+										</span>
 										<FieldGroup>
 											<form.Field name={`skills[${i}].category`}>
 												{(f) => (
@@ -572,7 +601,8 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 
 			{/* Certifications */}
 			<Section
-				title="Certifications"
+				def={sections[6]}
+				index={6}
 				action={
 					<form.Field name="certifications" mode="array">
 						{(field) => (
@@ -587,15 +617,18 @@ export function ResumeForm({ form }: { form: ResumeFormApi }) {
 					{(field) => (
 						<div className="flex flex-col gap-4">
 							{field.state.value.length === 0 ? (
-								<p className="text-xs text-muted-foreground">
+								<p className="border border-dashed border-border p-3 text-xs text-muted-foreground">
 									No certifications yet.
 								</p>
 							) : (
 								field.state.value.map((entry, i) => (
 									<div
 										key={entry.id}
-										className="flex flex-col gap-3 border border-border p-3"
+										className="relative flex flex-col gap-3 border border-border p-4 pt-9"
 									>
+										<span className="absolute top-2.5 left-4 font-mono text-xs text-muted-foreground">
+											Entry {String(i + 1).padStart(2, '0')}
+										</span>
 										<FieldGroup>
 											<form.Field name={`certifications[${i}].name`}>
 												{(f) => (
