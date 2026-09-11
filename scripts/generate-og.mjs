@@ -40,7 +40,7 @@ function oklchToHex(L, C, Hdeg) {
 const colors = {
 	background: oklchToHex(0.148, 0.004, 228.8),
 	foreground: oklchToHex(0.987, 0.002, 197.1),
-	primary: oklchToHex(0.455, 0.188, 13.697),
+	primary: oklchToHex(0.64, 0.25, 15),
 	'muted-foreground': oklchToHex(0.723, 0.014, 214.4),
 	card: oklchToHex(0.218, 0.008, 223.9),
 }
@@ -86,7 +86,7 @@ const html = `<!doctype html>
   :root {
     --bg: oklch(0.148 0.004 228.8);
     --fg: oklch(0.987 0.002 197.1);
-    --primary: oklch(0.455 0.188 13.697);
+    --primary: oklch(0.64 0.25 15);
     --muted: oklch(0.723 0.014 214.4);
     --border: oklch(1 0 0 / 10%);
   }
@@ -101,8 +101,8 @@ const html = `<!doctype html>
 
   body {
     background:
-      radial-gradient(1000px 500px at 85% -10%, oklch(0.455 0.188 13.697 / 0.16), transparent 60%),
-      radial-gradient(800px 500px at -10% 110%, oklch(0.455 0.188 13.697 / 0.08), transparent 60%),
+      radial-gradient(1000px 500px at 85% -10%, oklch(0.64 0.25 15 / 0.16), transparent 60%),
+      radial-gradient(800px 500px at -10% 110%, oklch(0.64 0.25 15 / 0.08), transparent 60%),
       var(--bg);
     color: var(--fg);
     font-family: "JetBrains Mono", monospace;
