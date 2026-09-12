@@ -20,14 +20,14 @@
 		"@fontsource-variable/oxanium": "5.3.0",
 		"@tailwindcss/postcss": "4.3.3",
 		"@tanstack/react-form": "^1.33.5",
-		"@tanstack/react-router": "1.170.34",
+		"@tanstack/react-router": "1.170.35",
 		"@tanstack/react-router-devtools": "1.167.1",
-		"@tanstack/react-start": "1.168.51",
+		"@tanstack/react-start": "1.168.52",
 		"@tanstack/zod-adapter": "1.167.0",
 		"@tanstack/zod-form-adapter": "^0.42.1",
 		"class-variance-authority": "0.7.1",
-		"cn": "0.2.6",
-		"lucide-react": "1.44.0",
+		"cn": "0.3.0",
+		"lucide-react": "1.45.0",
 		"postcss": "8.5.28",
 		"react": "19.3.0",
 		"react-dom": "19.3.0",
@@ -37,9 +37,9 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.13",
-		"@cloudflare/vite-plugin": "1.54.6",
+		"@cloudflare/vite-plugin": "1.54.8",
 		"@tailwindcss/vite": "4.3.3",
-		"@types/node": "26.4.0",
+		"@types/node": "22.20.2",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
 		"@vitejs/plugin-react": "6.1.1",
@@ -47,9 +47,9 @@
 		"tailwindcss": "4.3.3",
 		"typescript": "7.0.2",
 		"vite": "8.3.0",
-		"wrangler": "4.130.0"
+		"wrangler": "4.131.1"
 	},
 	"engines": {
-		"pnpm": "11.25.0"
+		"pnpm": "12.4.1"
 	}
 }
