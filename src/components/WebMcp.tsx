@@ -55,7 +55,7 @@ function tools(): WebMcpTool[] {
 			name: 'get_current_projects',
 			description: `List what ${me.name} is currently working on.`,
 			inputSchema: { ...emptyObjectSchema },
-			execute: () => JSON.stringify(me.now),
+			execute: () => JSON.stringify(me.projects),
 		},
 		{
 			name: 'get_links',

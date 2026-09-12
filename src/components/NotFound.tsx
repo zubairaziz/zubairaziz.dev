@@ -3,7 +3,7 @@ import { Button } from '~/components/ui/button'
 
 export function NotFound() {
 	return (
-		<div className="flex min-h-[50vh] flex-col items-start justify-center gap-4 font-mono">
+		<div className="mx-auto flex min-h-[50vh] w-full max-w-5xl flex-col items-start justify-center gap-4 font-mono">
 			<p className="text-sm text-muted-foreground">
 				<span className="text-primary">$</span> cat /this/path
 			</p>

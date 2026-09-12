@@ -158,3 +158,78 @@
 		animation: none;
 	}
 }
+
+/* --- Resume builder ------------------------------------------------------- */
+
+/*
+ * The rendered resume document reads its palette/typography from the
+ * `--resume-*` variables set inline by `themeToStyle(...)`. Fallbacks keep the
+ * paper legible before a theme is applied.
+ */
+.resume-paper {
+	background: var(--resume-bg, #ffffff);
+	color: var(--resume-text, #1f2937);
+	box-shadow:
+		0 0 0 1px var(--resume-border, #e5e7eb),
+		0 10px 30px rgb(0 0 0 / 0.08);
+	padding: 0.55in;
+	min-height: 11in;
+	box-sizing: border-box;
+	/* Force the paper's own colors (notably the dark Terminal theme) to print
+	   even when the user hasn't ticked "Background graphics". */
+	-webkit-print-color-adjust: exact;
+	print-color-adjust: exact;
+}
+
+/* The print-only resume copy is hidden on screen. */
+.resume-print-root {
+	display: none;
+}
+
+/*
+ * The sticky on-screen preview column: tall resumes get an inner scroll so the
+ * whole paper stays reachable while the form is being edited. Keep the
+ * scrollbar thin and token-colored (`--border`) so it doesn't compete with the
+ * paper.
+ */
+.resume-preview-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border) transparent;
+}
+
+.resume-preview-scroll::-webkit-scrollbar {
+	width: 8px;
+}
+
+.resume-preview-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.resume-preview-scroll::-webkit-scrollbar-thumb {
+	background: var(--border);
+	border-radius: 9999px;
+}
+
+/*
+ * Print-to-PDF: hide the entire app and show only the portal-hosted resume.
+ * `ResumePrintPortal` renders `#resume-print-root` as a direct child of <body>,
+ * so `body > *:not(.resume-print-root)` removes the site chrome and builder UI
+ * without touching the resume. The resume stays in normal document flow (no
+ * `position: absolute`), so the browser paginates multi-page resumes instead
+ * of clipping everything after page one.
+ */
+@media print {
+	@page {
+		size: letter;
+		margin: 0;
+	}
+
+	body.printing-resume > *:not(.resume-print-root) {
+		display: none;
+	}
+
+	body.printing-resume .resume-print-root {
+		display: block;
+		box-shadow: none;
+	}
+}

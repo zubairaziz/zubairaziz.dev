@@ -29,17 +29,17 @@ A single-page terminal — every section is a shell command and its output.
 
 | Route | What it is |
 | --- | --- |
-| `/` | The terminal one-pager — `$ whoami`, `$ working on`, `$ cat ~/links` |
+| `/` | The terminal one-pager — `$ whoami`, `$ tree ~/projects`, `$ cat ~/links` |
 | `/$` | Catch-all → shared 404 |
 
 Copy lives in **`src/lib/me.ts`** — the single source of truth for the name,
-tagline, "now" items, and links. Edit that file to change what the site says.
+tagline, projects, and links. Edit that file to change what the site says.
 
 ---
 
 ## Structure
 
-```
+```sh
 wrangler.jsonc               # Cloudflare Workers config (name, entry, compat flags)
 .github/workflows/deploy.yml # CI: build + wrangler deploy on push to main
 src/

@@ -5,7 +5,7 @@ export function DefaultCatchBoundary({ error }: { error: unknown }) {
 	console.error(error)
 
 	return (
-		<div className="flex min-h-[40vh] flex-col items-start justify-center gap-4 font-mono">
+		<div className="mx-auto flex min-h-[40vh] w-full max-w-5xl flex-col items-start justify-center gap-4 font-mono">
 			<p className="text-sm text-muted-foreground">
 				<span className="text-primary">$</span> ./render --strict
 			</p>

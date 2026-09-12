@@ -42,7 +42,14 @@ export function homepageMarkdown(): string {
 		'',
 		'## Working on',
 		'',
-		...me.now.map((item) => `- [${item.label}](${item.href})`),
+		...me.projects.flatMap((project) =>
+			'title' in project
+				? [
+						`- ${project.title}`,
+						...project.links.map((link) => `  - [${link.label}](${link.href})`),
+					]
+				: [`- [${project.label}](${project.href})`],
+		),
 		'',
 		'## Links',
 		'',
