@@ -32,7 +32,7 @@
 					"name": { "type": "string" },
 					"role": { "type": "string" },
 					"tagline": { "type": "array", "items": { "type": "string" } },
-					"now": { "type": "array", "items": { "type": "object" } },
+					"projects": { "type": "array", "items": { "type": "object" } },
 					"links": { "type": "array", "items": { "type": "object" } }
 				}
 			}

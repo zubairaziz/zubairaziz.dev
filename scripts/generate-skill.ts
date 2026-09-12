@@ -49,10 +49,17 @@ export function generateSkill(): { skillOut: string; digestOut: string } {
 		`- **Site:** ${base}`,
 	]
 
-	if (me.now.length > 0) {
+	if (me.projects.length > 0) {
 		lines.push('', '## Current projects', '')
-		for (const item of me.now) {
-			lines.push(`- ${item.label} — ${item.href}`)
+		for (const project of me.projects) {
+			if ('title' in project) {
+				lines.push(`- ${project.title}`)
+				for (const link of project.links) {
+					lines.push(`  - ${link.label} — ${link.href}`)
+				}
+			} else {
+				lines.push(`- ${project.label} — ${project.href}`)
+			}
 		}
 	}
 
