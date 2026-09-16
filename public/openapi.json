@@ -6,6 +6,23 @@
 		"description": "Read-only endpoints describing Zubair Aziz's personal site."
 	},
 	"servers": [{ "url": "https://zubairaziz.dev" }],
+	"x-webmcp-tools": [
+		{
+			"name": "get_resume",
+			"summary": "Read the current resume as JSON.",
+			"url": "https://zubairaziz.dev/tools/resume-builder/"
+		},
+		{
+			"name": "set_resume",
+			"summary": "Replace the resume with a complete new object.",
+			"url": "https://zubairaziz.dev/tools/resume-builder/"
+		},
+		{
+			"name": "clear_resume",
+			"summary": "Reset the resume to empty.",
+			"url": "https://zubairaziz.dev/tools/resume-builder/"
+		}
+	],
 	"paths": {
 		"/": {
 			"get": {
@@ -18,6 +35,20 @@
 							"application/json": {
 								"schema": { "$ref": "#/components/schemas/Profile" }
 							}
+						}
+					}
+				}
+			}
+		},
+		"/tools/resume-builder/": {
+			"get": {
+				"summary": "Resume builder (WebMCP)",
+				"description": "A browser-based resume builder. The page registers WebMCP tools — get_resume, set_resume, clear_resume — so an AI agent with WebMCP support can read and fill the form. These tools are client-side and are not callable over this HTTP API.",
+				"responses": {
+					"200": {
+						"description": "HTML page",
+						"content": {
+							"text/html": {}
 						}
 					}
 				}
