@@ -13,6 +13,10 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { me } from '../src/lib/me.ts'
+import {
+	RESUME_BUILDER_PATH,
+	RESUME_WEBMCP_TOOLS,
+} from '../src/lib/resume/webmcp-meta.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const out = join(root, 'public', 'llms.txt')
@@ -66,6 +70,17 @@ export function generateLlmText() {
 			const title = linkTitles[link.label] ?? link.label
 			lines.push(`- [${title}](${link.href})`)
 		}
+	}
+
+	lines.push(
+		'',
+		'## Resume builder tools',
+		'',
+		`[Resume builder](${base}${RESUME_BUILDER_PATH}): build a resume in the browser. The page exposes WebMCP tools, so an AI agent with browser access can read and fill the form:`,
+		'',
+	)
+	for (const [name, tool] of Object.entries(RESUME_WEBMCP_TOOLS)) {
+		lines.push(`- \`${name}\` — ${tool.summary}`)
 	}
 
 	mkdirSync(dirname(out), { recursive: true })

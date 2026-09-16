@@ -12,6 +12,7 @@ The personal site of Zubair Aziz, a terminal-styled one-pager at https://zubaira
 
 - [quiltt](https://www.quiltt.io/)
 - [tabtally](https://www.tabtally.io/)
+- [resume-builder](https://www.zubairaziz.dev/tools/resume-builder)
 
 ## Links
 
@@ -20,3 +21,11 @@ The personal site of Zubair Aziz, a terminal-styled one-pager at https://zubaira
 - [LinkedIn](https://www.linkedin.com/in/zubairaziz13)
 - [Email](mailto:zubairaziz.dev@gmail.com)
 - [WhatsApp](https://wa.me/+601140015269)
+
+## Resume builder tools
+
+[Resume builder](https://zubairaziz.dev/tools/resume-builder/): build a resume in the browser. The page exposes WebMCP tools, so an AI agent with browser access can read and fill the form:
+
+- `get_resume` — Read the current resume as JSON.
+- `set_resume` — Replace the resume with a complete new object.
+- `clear_resume` — Reset the resume to empty.

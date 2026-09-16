@@ -1,13 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Eye, EyeOff } from 'lucide-react'
+import { Bot, Eye, EyeOff } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ExportMenu } from '~/components/resume/ExportMenu'
 import { ResumeForm } from '~/components/resume/ResumeForm'
 import { ResumePreview } from '~/components/resume/ResumePreview'
 import { ResumePrintPortal } from '~/components/resume/ResumePrintPortal'
+import { ResumeWebMcp } from '~/components/resume/ResumeWebMcp'
 import { SectionNav } from '~/components/resume/SectionNav'
 import { ThemeSelector } from '~/components/resume/ThemeSelector'
 import { Button } from '~/components/ui/button'
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '~/components/ui/tooltip'
 import { sampleResume } from '~/lib/resume/defaults'
 import { useResumeForm } from '~/lib/resume/form'
 import { computeSectionFilled, sections } from '~/lib/resume/sections'
@@ -62,90 +69,121 @@ function ResumeBuilder() {
 	}
 
 	return (
-		<div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-			<header className="flex flex-col gap-5 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
-				<div className="flex flex-col gap-2">
-					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-						<h1 className="font-heading text-2xl font-bold text-foreground">
-							Resume Builder
-						</h1>
-						<form.Subscribe selector={(state) => state.values}>
-							{(values) => {
-								const filled = computeSectionFilled(values).size
-								return (
-									<div className="flex items-center gap-2">
-										<span className="font-mono text-xs text-muted-foreground tabular-nums">
-											{filled}/{sections.length}
-										</span>
-										<div
-											className="h-1 w-20 bg-muted"
-											role="progressbar"
-											aria-label="Sections complete"
-											aria-valuemin={0}
-											aria-valuemax={sections.length}
-											aria-valuenow={filled}
-										>
+		<TooltipProvider delay={200}>
+			<div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+				<header className="flex flex-col gap-5 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-2">
+						<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+							<h1 className="font-heading text-2xl font-bold text-foreground">
+								Resume Builder
+							</h1>
+							<form.Subscribe selector={(state) => state.values}>
+								{(values) => {
+									const filled = computeSectionFilled(values).size
+									return (
+										<div className="flex items-center gap-2">
+											<span className="font-mono text-xs text-muted-foreground tabular-nums">
+												{filled}/{sections.length}
+											</span>
 											<div
-												className="h-full bg-primary transition-[width] duration-300"
-												style={{
-													width: `${(filled / sections.length) * 100}%`,
-												}}
-											/>
+												className="h-1 w-20 bg-muted"
+												role="progressbar"
+												aria-label="Sections complete"
+												aria-valuemin={0}
+												aria-valuemax={sections.length}
+												aria-valuenow={filled}
+											>
+												<div
+													className="h-full bg-primary transition-[width] duration-300"
+													style={{
+														width: `${(filled / sections.length) * 100}%`,
+													}}
+												/>
+											</div>
 										</div>
-									</div>
-								)
-							}}
-						</form.Subscribe>
+									)
+								}}
+							</form.Subscribe>
+						</div>
+						<p className="max-w-md text-sm text-muted-foreground">
+							Fill in your details, watch the preview update live, then export
+							as Markdown or a print-ready, ATS-ready PDF.
+						</p>
 					</div>
-					<p className="max-w-md text-sm text-muted-foreground">
-						Fill in your details, watch the preview update live, then export as
-						Markdown or a print-ready, ATS-ready PDF.
-					</p>
-				</div>
 
-				<div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-					<ThemeSelector value={themeId} onChange={handleThemeChange} />
-					<ExportMenu form={form} />
-				</div>
-			</header>
+					<div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+						<Tooltip>
+							<TooltipTrigger
+								render={
+									<Button type="button" variant="outline" size="sm">
+										<Bot data-icon="inline-start" />
+										AI agent
+									</Button>
+								}
+							/>
+							<TooltipContent
+								side="bottom"
+								align="end"
+								className="flex-col items-start gap-1 py-2.5"
+							>
+								<span className="font-heading text-xs font-semibold">
+									Agent-ready
+								</span>
+								<span className="max-w-56 text-xs leading-relaxed text-background/80">
+									An AI agent with WebMCP can read and fill this form.
+								</span>
+								<code className="font-mono text-[11px] text-background/70">
+									get_resume · set_resume · clear_resume
+								</code>
+							</TooltipContent>
+						</Tooltip>
+						<ThemeSelector value={themeId} onChange={handleThemeChange} />
+						<ExportMenu form={form} />
+					</div>
+				</header>
 
-			<div className="grid items-start gap-8 lg:grid-cols-2 xl:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
-				<SectionNav form={form} />
+				<div className="grid items-start gap-8 lg:grid-cols-2 xl:grid-cols-[12rem_minmax(0,1fr)_minmax(0,1fr)]">
+					<SectionNav form={form} />
 
-				<ResumeForm form={form} />
+					<ResumeForm form={form} />
 
-				<div className="flex flex-col gap-3 self-stretch">
-					<div className="lg:hidden">
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => setShowPreview((v) => !v)}
+					<div className="flex flex-col gap-3 self-stretch">
+						<div className="lg:hidden">
+							<Button
+								type="button"
+								variant="outline"
+								size="sm"
+								onClick={() => setShowPreview((v) => !v)}
+							>
+								{showPreview ? (
+									<EyeOff data-icon="inline-start" />
+								) : (
+									<Eye data-icon="inline-start" />
+								)}
+								{showPreview ? 'Hide preview' : 'Show preview'}
+							</Button>
+						</div>
+
+						<div
+							className={`${
+								showPreview ? 'block' : 'hidden lg:block'
+							} lg:sticky lg:top-20`}
 						>
-							{showPreview ? (
-								<EyeOff data-icon="inline-start" />
-							) : (
-								<Eye data-icon="inline-start" />
-							)}
-							{showPreview ? 'Hide preview' : 'Show preview'}
-						</Button>
-					</div>
-
-					<div
-						className={`${
-							showPreview ? 'block' : 'hidden lg:block'
-						} lg:sticky lg:top-20`}
-					>
-						<div className="resume-preview-scroll lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:p-2 lg:-m-2">
-							<ResumePreview form={form} theme={theme} />
+							<div className="resume-preview-scroll lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:p-2 lg:-m-2">
+								<ResumePreview form={form} theme={theme} />
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* Hidden print-only copy, portaled to <body> so the print
+				{/* Hidden print-only copy, portaled to <body> so the print
 			    stylesheet can show it in isolation. */}
-			<ResumePrintPortal form={form} theme={theme} />
-		</div>
+				<ResumePrintPortal form={form} theme={theme} />
+
+				{/* Exposes get_resume / set_resume / clear_resume as WebMCP tools
+			    so AI agents can read and fill the form through the browser. */}
+				<ResumeWebMcp form={form} />
+			</div>
+		</TooltipProvider>
 	)
 }

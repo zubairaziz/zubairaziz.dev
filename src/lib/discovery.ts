@@ -7,6 +7,7 @@
  * content negotiation) lives in `src/start.ts`, which is server-only.
  */
 import { me } from './me'
+import { RESUME_BUILDER_PATH, RESUME_WEBMCP_TOOLS } from './resume/webmcp-meta'
 import { SKILL_DIGEST } from './skill-digest.gen'
 
 export const BASE = `https://${me.host}`
@@ -54,6 +55,14 @@ export function homepageMarkdown(): string {
 		'## Links',
 		'',
 		...me.links.map((link) => `- [${link.label}](${link.href})`),
+		'',
+		'## Resume builder',
+		'',
+		`An AI-agent-ready resume builder lives at ${BASE}${RESUME_BUILDER_PATH}. It exposes WebMCP tools in the browser, so an agent can read and fill the form:`,
+		'',
+		...Object.entries(RESUME_WEBMCP_TOOLS).flatMap(([name, tool]) => [
+			`- \`${name}\` — ${tool.summary}`,
+		]),
 		'',
 		'## Agent resources',
 		'',
@@ -124,6 +133,17 @@ export function ardCatalog(): Record<string, unknown> {
 					'get Zubair Aziz profile data',
 					'list Zubair Aziz current projects',
 					'get Zubair Aziz social links',
+				],
+			},
+			{
+				identifier: `urn:air:${me.host}:tool:resume-builder`,
+				displayName: `${me.name} — Resume Builder`,
+				type: 'text/html',
+				url: `${BASE}${RESUME_BUILDER_PATH}`,
+				representativeQueries: [
+					'build my resume',
+					'fill in my resume with my work history',
+					'export my resume to PDF',
 				],
 			},
 		],
